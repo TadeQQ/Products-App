@@ -1,7 +1,11 @@
 import React from "react";
-
+import { ProductInfo } from "../../components/info/ProductInfo";
 const ProductPage = () => {
-  return <div>productId</div>;
+  return (
+    <div>
+      <ProductInfo />
+    </div>
+  );
 };
 
 export default ProductPage;

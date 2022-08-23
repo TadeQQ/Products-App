@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { container, item, button } from "./Product.css";
-import test_photo from "../../public/test_photo.jpg";
-import Image from "next/image";
+
 import Link from "next/link";
 import { Routes } from "../../routes/Routes";
 export const Product = () => {
@@ -41,6 +40,7 @@ export const Product = () => {
           </div>
         </Link>
       ))}
+
       <button className={button} onClick={() => loadMore()}>
         LoadMore
       </button>
