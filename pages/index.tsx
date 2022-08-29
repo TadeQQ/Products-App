@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
 import { MainComponent } from "../components/main/MainComponent";
-import { style } from "@vanilla-extract/css";
+
 import { Routes } from "../routes/Routes";
+
 const Home: NextPage = () => {
   return (
     <div>

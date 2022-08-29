@@ -6,6 +6,9 @@ const withVanillaExtract = createVanillaExtractPlugin();
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
+  images: {
+    domains: ["dummyjson.com"],
+  },
 };
 
 module.exports = withVanillaExtract(nextConfig);

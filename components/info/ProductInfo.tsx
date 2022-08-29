@@ -17,26 +17,27 @@ import { Pagination, Autoplay, Navigation, EffectFade } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
+import { useProduct } from "../../hooks/useProduct";
 export const ProductInfo = () => {
   const router = useRouter();
-  const productId = router.query.productId;
-  const [product, setProduct] = useState([]);
+  const productId = Number(router.query["productId"]);
+  const { data: product } = useProduct({ id: productId });
+  // const [product, setProduct] = useState([]);
 
-  const fetchData = async () => {
-    await fetch(`https://dummyjson.com/products/${productId}`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setProduct(data);
-        console.log(data);
-      });
-  };
+  // const fetchData = async () => {
+  //   await fetch(`https://dummyjson.com/products/${productId}`)
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       setProduct(data);
+  //       console.log(data);
+  //     });
+  // };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [productId]);
 
   return (
     <div>
@@ -56,7 +57,7 @@ export const ProductInfo = () => {
           modules={[Pagination, Autoplay, Navigation]}
           className={swiper}
         >
-          {product.images?.map((img) => (
+          {product?.images?.map((img) => (
             <SwiperSlide key={img} className={swiperSlide}>
               <img src={img} alt="dupa" width={400} height={300}></img>
             </SwiperSlide>
@@ -64,18 +65,18 @@ export const ProductInfo = () => {
         </Swiper>
 
         <div className={info}>
-          <h2>{product.title} </h2>
-          <p className={krzywy}>{product.description}</p>
+          <h2>{product?.title} </h2>
+          <p className={krzywy}>{product?.description}</p>
           <div>
-            Brand: <a className={black}>{product.brand}</a>
+            Brand: <a className={black}>{product?.brand}</a>
             <br />
-            Category: <a className={black}>{product.category}</a>
+            Category: <a className={black}>{product?.category}</a>
             <br />
-            rating: <a className={black}>{product.rating}</a>
-            <div className={price}>{product.price} USD</div>
+            rating: <a className={black}>{product?.rating}</a>
+            <div className={price}>{product?.price} USD</div>
             <br />
             <div className={rightCorner}>
-              In stock: &nbsp; <div className={black}>{product.stock}</div>
+              In stock: &nbsp; <div className={black}>{product?.stock}</div>
             </div>
           </div>
         </div>

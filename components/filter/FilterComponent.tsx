@@ -1,32 +1,20 @@
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { Routes } from "../../routes/Routes";
 import { container, button } from "./FilterComponent.css";
 export const FilterComponent = () => {
-  const [categories, setCategories] = useState([]);
-
-  const fetchData = async () => {
-    await fetch(`https://dummyjson.com/products/categories`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setCategories(data);
-      });
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <div className={container}>
-      <button className={button}> BRAND_SELECT</button>
-      <select name="categories" id="categories">
-        {categories.map((category) => (
-          <option key={category} value={category}>
-            {category}
-          </option>
-        ))}
-      </select>
+      <Link href={Routes.CATEGORY}>
+        <button className={button} disabled>
+          {" "}
+          BRAND_SELECT
+        </button>
+      </Link>
+
+      <Link href={Routes.CATEGORY}>
+        <button className={button}> CATEGORY_SELECT</button>
+      </Link>
     </div>
   );
 };
