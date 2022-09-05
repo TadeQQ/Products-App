@@ -6,40 +6,47 @@ import { Product as ProductType } from "../../types/Product";
 import Image from "next/image";
 import { useProducts } from "../../hooks/useProducts";
 export const Product = () => {
-  const [limit, setLimit] = useState(5);
-  const { data } = useProducts({ limit: limit });
-  const shoudShow = data?.limit < data?.total;
+  // const [page, setPage] = useState(1);
+  const { data, size, setSize } = useProducts();
+  // const shoudShow = Number(data?.limit) < Number(data?.total);
 
   const loadMore = () => {
-    setLimit((prev) => prev + 5);
+    setSize(size + 1);
   };
-
+  // let products = 0;
+  // if (data) {
+  //   for (let i = 0; i < data?.length; i++) {
+  //     products += data[i].products.length;
+  //   }
+  // }
   console.log(data);
 
   return (
     <div className={container}>
-      {data?.products?.map((product) => (
-        <Link href={Routes.PRODUCT(product.id)} key={product.id}>
-          <div className={item}>
-            <Image
-              src={product.thumbnail}
-              alt={product.title}
-              height={200}
-              width={220}
-            />
-            <div>
-              <h3>{product.title}</h3>
-              {product.description}
+      {/* total products: {products} */}
+      {data?.map((response) =>
+        response.map((product) => (
+          <Link href={Routes.PRODUCT(product.id)} key={product.id}>
+            <div className={item}>
+              <Image
+                src={product.thumbnail}
+                alt={product.title}
+                height={200}
+                width={220}
+              />
+              <div>
+                <h3>{product.title}</h3>
+                {product.description}
+              </div>
             </div>
-          </div>
-        </Link>
-      ))}
-
-      {shoudShow && (
-        <button className={button} onClick={() => loadMore()}>
-          LoadMore
-        </button>
+          </Link>
+        ))
       )}
+      {/* {shoudShow && ( */}
+      <button className={button} onClick={() => loadMore()}>
+        LoadMore
+      </button>
+      {/* )} */}
     </div>
   );
 };

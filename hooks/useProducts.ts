@@ -1,25 +1,31 @@
 import axios from "axios";
 import useSWR, { SWRConfiguration } from "swr";
+import useSWRInfinite from "swr/infinite";
 import { ProductsResponse } from "../types/Response";
+import { Product } from "../types/Product";
 
 interface UseProductsProps {
-  limit: number;
+  limit?: number;
+  page: number;
 }
 
-const getKey = (limit: number) =>
-  `https://dummyjson.com/products?limit=${limit}`;
+const getKey = (page: number, prevData?: Product[]) => {
+  if (page && !prevData?.length) return null;
 
-export const fetchProducts = ({ limit }: UseProductsProps) => {
-  return axios.get<ProductsResponse["products"]>(getKey(limit));
+  return `http://localhost:3000/products?_page=${page}&_limit=5`;
+};
+// const getKey = ({ page, , limit }: UseProductsProps) => {
+//   if (page && !prevPage.length) return null; // reached the end
+//   return `/users?page=${pageIndex}&limit=10`; // SWR key
+// };
+
+export const fetchProducts = (url: string) => {
+  return axios.get<Product[]>(url).then((res) => res.data);
 };
 
 export const useProducts = (
-  { limit }: UseProductsProps,
+  // { limit = 5, page }: UseProductsProps,
   options?: SWRConfiguration
 ) => {
-  return useSWR<ProductsResponse["products"]>(
-    getKey(limit),
-    () => fetchProducts({ limit }).then((res) => res.data),
-    options
-  );
+  return useSWRInfinite<Product[]>(getKey, fetchProducts, options);
 };
