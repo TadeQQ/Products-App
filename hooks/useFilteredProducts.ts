@@ -6,11 +6,11 @@ interface UseFilteredProductProps {
   category: string;
 }
 
-const getKey = (category: string) =>
-  `https://dummyjson.com/products/category/${category}`;
+const getKey = (category?: string) =>
+  `https://localhost:3000/products${category ? "/" + category : ""}`;
 
 const fetchProduct = ({ category }: UseFilteredProductProps) => {
-  return axios.get<Product>(getKey(category));
+  return axios.get<Product[]>(getKey(), { params: { category } });
 };
 
 export const useFilteredProduct = (
@@ -18,7 +18,7 @@ export const useFilteredProduct = (
   options?: SWRConfiguration
 ) => {
   const shouldFetch = typeof category !== "undefined";
-  return useSWR<Product>(
+  return useSWR<Product[]>(
     shouldFetch ? getKey(category) : null,
     () => fetchProduct({ category }).then((res) => res.data),
     options

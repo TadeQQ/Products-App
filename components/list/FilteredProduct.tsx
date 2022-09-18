@@ -6,14 +6,12 @@ import { Routes } from "../../routes/Routes";
 import Image from "next/image";
 import { useFilteredProduct } from "../../hooks/useFilteredProducts";
 import { useRouter } from "next/router";
-
+import { FilterComponent } from "../filter/FilterComponent";
 export const FilteredProduct = () => {
   const router = useRouter();
   const productCategory = String(router.query["categoryName"]);
   const [limit, setLimit] = useState(5);
   const { data } = useFilteredProduct({ category: productCategory });
-
-  const shoudShow = data?.limit < data?.total;
 
   const loadMore = () => {
     setLimit((prev) => prev + 5);
@@ -27,10 +25,10 @@ export const FilteredProduct = () => {
         {" "}
         <h1>Product app</h1>
       </a>
-      <a href={Routes.CATEGORY}>
-        {" "}
-        <h2>Categories</h2>
-      </a>
+      <div>
+        <h3>FILTERING</h3>
+        <FilterComponent />
+      </div>
       <div className={container}>
         {data?.products?.map((product) => (
           <Link href={Routes.PRODUCT(product.id)} key={product.id}>
@@ -48,12 +46,6 @@ export const FilteredProduct = () => {
             </div>
           </Link>
         ))}
-
-        {shoudShow && (
-          <button className={button} onClick={() => loadMore()}>
-            LoadMore
-          </button>
-        )}
       </div>
     </div>
   );

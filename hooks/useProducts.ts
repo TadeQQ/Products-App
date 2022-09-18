@@ -1,18 +1,29 @@
-import axios from "axios";
 import useSWR, { SWRConfiguration } from "swr";
 import useSWRInfinite from "swr/infinite";
 import { ProductsResponse } from "../types/Response";
 import { Product } from "../types/Product";
+import { withURLParams } from "../utils/withURLParams";
+import {
+  DecodedValueMap,
+  NumberParam,
+  withDefault,
+  StringParam,
+} from "serialize-query-params";
+import { apiClient } from "../utils/axios";
 
-interface UseProductsProps {
-  limit?: number;
-  page: number;
-}
+const FetchProductsQueryConfig = {
+  _page: withDefault(NumberParam, 1),
+  _limit: withDefault(NumberParam, 5),
+  category: StringParam,
+  brand: StringParam,
+};
 
-const getKey = (page: number, prevData?: Product[]) => {
-  if (page && !prevData?.length) return null;
+type FetchProductsQueryParams = Partial<
+  DecodedValueMap<typeof FetchProductsQueryConfig>
+>;
 
-  return `http://localhost:3000/products?_page=${page}&_limit=5`;
+const getKey = (params: FetchProductsQueryParams) => {
+  return withURLParams("/products", FetchProductsQueryConfig, params);
 };
 // const getKey = ({ page, , limit }: UseProductsProps) => {
 //   if (page && !prevPage.length) return null; // reached the end
@@ -20,12 +31,18 @@ const getKey = (page: number, prevData?: Product[]) => {
 // };
 
 export const fetchProducts = (url: string) => {
-  return axios.get<Product[]>(url).then((res) => res.data);
+  return apiClient.get<Product[]>(url);
 };
 
 export const useProducts = (
-  // { limit = 5, page }: UseProductsProps,
+  params: FetchProductsQueryParams,
   options?: SWRConfiguration
-) => {
-  return useSWRInfinite<Product[]>(getKey, fetchProducts, options);
-};
+) =>
+  useSWRInfinite(
+    (page, prevData) => {
+      if (prevData && !prevData?.length) return null;
+      return getKey(params);
+    },
+    (url) => fetchProducts(url).then((res) => res.data),
+    options
+  );

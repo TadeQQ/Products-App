@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { FilterComponent } from "../filter/FilterComponent";
-import { List } from "../list/List";
 import { container, filterName } from "./MainComponent.css";
+import { NewFilteredList } from "../list/NewFilteredList";
+import { FilteredList } from "../list/FilteredList";
+import { ProductsList } from "../list/ProductsList";
+import { useProducts } from "../../hooks/useProducts";
+import { Product } from "../../types/Product";
 export const MainComponent = () => {
+  const [category, setCategory] = useState(null);
+  const [brand, setBrand] = useState(null);
+  const [page, setPage] = useState(1);
+  const { data: products } = useProducts({ _page: page });
+  console.log(products);
   return (
     <div className={container}>
       <div>
         <h3 className={filterName}>FILTERING</h3>
-        <FilterComponent />
+        {/* <FilterComponent /> */}
       </div>
       <div>
-        <List />
+        <ProductsList products={products as Product[]} />
+        <button onClick={() => setPage((p) => p + 1)}>click</button>
       </div>
     </div>
   );
