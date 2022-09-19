@@ -10,6 +10,7 @@ import {
   StringParam,
 } from "serialize-query-params";
 import { apiClient } from "../utils/axios";
+import { useEffect } from "react";
 
 const FetchProductsQueryConfig = {
   _page: withDefault(NumberParam, 1),
