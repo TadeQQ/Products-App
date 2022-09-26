@@ -1,5 +1,4 @@
 import { style } from "@vanilla-extract/css";
-import Swiper from "swiper";
 
 export const container = style({
   backgroundColor: "white",

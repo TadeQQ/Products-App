@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-export const container = style({
+export const containerR = style({
   margin: "auto",
   width: "50%",
   border: "solid 1px",
