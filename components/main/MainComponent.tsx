@@ -1,38 +1,69 @@
-import React, { useEffect, useState } from "react";
-import { FilterComponent } from "../filter/FilterComponent";
+import React, { useState, useMemo } from "react";
 import { container, filterName } from "./MainComponent.css";
-import { NewFilteredList } from "../list/NewFilteredList";
-import { FilteredList } from "../list/FilteredList";
+import { containerR, item, button } from "../list/Product.css";
 import { ProductsList } from "../list/ProductsList";
 import { useProducts } from "../../hooks/useProducts";
-import { Product } from "../../types/Product";
-interface DataProps {
-  data: Product[];
-}
+import { useFetchFilters } from "../../hooks/useFetchFilters";
+import { formatString } from "../../utils/formatString";
 
 export const MainComponent = () => {
-  const [category, setCategory] = useState(null);
-  const [brand, setBrand] = useState(null);
-  const [page, setPage] = useState(1);
-  const [products, setProducts] = useState([]);
-  const { data } = useProducts({ _page: page });
-  console.log("to są products:", data);
+  const [category, setCategory] = useState<string>("");
+
+  const [brand, setBrand] = useState<string>("");
+  const { filters } = useFetchFilters();
+
+  const { data, size, setSize } = useProducts({
+    brand: brand === "" ? undefined : brand,
+    category: category === "" ? undefined : category,
+  });
+  const products = useMemo(() => data?.map((arr) => arr.data), [data]);
+
+  const isLoadMoreVisible = useMemo(() => {
+    const total = data?.reduce((acc, prev) => acc + prev.data.length, 0);
+    return Number(total) < Number(data?.[0].totalCount);
+  }, [data]);
+
+  const handleChangeCategory: React.ChangeEventHandler<HTMLSelectElement> = (
+    e
+  ) => {
+    setCategory(e.target.value);
+  };
+  const handleChangeBrand: React.ChangeEventHandler<HTMLSelectElement> = (
+    e
+  ) => {
+    setBrand(e.target.value);
+  };
 
   return (
-    <div className={container}>
-      <div>
-        <h3 className={filterName}>FILTERING</h3>
-        {/* <FilterComponent /> */}
+    <div className={containerR}>
+      <h3 className={filterName}>FILTERING</h3>
+      <div className={container}>
+        <div>
+          <select onChange={handleChangeCategory}>
+            <option value={""}>All</option>
+            {filters?.categories.map((category) => (
+              <option key={category} value={category}>
+                {formatString(category)}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <select onChange={handleChangeBrand}>
+            <option value={""}>All</option>
+            {filters?.brands.map((brand) => (
+              <option key={brand} value={brand}>
+                {formatString(brand)}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      <div>
-        {data ? (
-          <ProductsList products={data as Product[]} />
-        ) : (
-          console.log("Loading...")
-        )}
+      <div>{data ? <ProductsList products={products} /> : "Loading..."}</div>
 
-        <button onClick={() => setPage((p) => p + 1)}>click</button>
-      </div>
+      {isLoadMoreVisible && (
+        <button onClick={() => setSize((p) => p + 1)}>Load More</button>
+      )}
     </div>
   );
 };
