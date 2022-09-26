@@ -1,6 +1,5 @@
-import useSWR, { SWRConfiguration } from "swr";
+import { SWRConfiguration } from "swr";
 import useSWRInfinite from "swr/infinite";
-import { ProductsResponse } from "../types/Response";
 import { Product } from "../types/Product";
 import { withURLParams } from "../utils/withURLParams";
 import {
@@ -10,7 +9,6 @@ import {
   StringParam,
 } from "serialize-query-params";
 import { apiClient } from "../utils/axios";
-import { useEffect } from "react";
 
 const FetchProductsQueryConfig = {
   _page: withDefault(NumberParam, 1),
@@ -26,24 +24,33 @@ type FetchProductsQueryParams = Partial<
 const getKey = (params: FetchProductsQueryParams) => {
   return withURLParams("/products", FetchProductsQueryConfig, params);
 };
-// const getKey = ({ page, , limit }: UseProductsProps) => {
-//   if (page && !prevPage.length) return null; // reached the end
-//   return `/users?page=${pageIndex}&limit=10`; // SWR key
-// };
 
 export const fetchProducts = (url: string) => {
   return apiClient.get<Product[]>(url);
 };
 
+interface UseProductsResponse {
+  data: Product[];
+  totalCount: string;
+}
+
 export const useProducts = (
-  params: FetchProductsQueryParams,
+  { _page, _limit = 2, category, brand }: FetchProductsQueryParams,
   options?: SWRConfiguration
 ) =>
-  useSWRInfinite(
+  useSWRInfinite<UseProductsResponse>(
     (page, prevData) => {
-      if (prevData && !prevData?.length) return null;
-      return getKey(params);
+      if (prevData?.data && !prevData?.data.length) return null;
+      return getKey({
+        _page: page + 1,
+        _limit: _limit,
+        category: category,
+        brand: brand,
+      });
     },
-    (url) => fetchProducts(url).then((res) => res.data),
+    (url) =>
+      fetchProducts(url).then((res) => {
+        return { totalCount: res.headers["x-total-count"], data: res.data };
+      }),
     options
   );
