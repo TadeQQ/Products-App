@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import { Routes } from "../../routes/Routes";
 import {
@@ -22,23 +22,6 @@ export const ProductInfo = () => {
   const router = useRouter();
   const productId = Number(router.query["productId"]);
   const { data: product } = useProduct({ id: productId });
-  // const [product, setProduct] = useState([]);
-
-  // const fetchData = async () => {
-  //   await fetch(`https://dummyjson.com/products/${productId}`)
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       setProduct(data);
-  //       console.log(data);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, [productId]);
-
   return (
     <div>
       <a href={Routes.HOME} className={noneStyle}>
@@ -63,7 +46,6 @@ export const ProductInfo = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-
         <div className={info}>
           <h2>{product?.title} </h2>
           <p className={krzywy}>{product?.description}</p>
@@ -81,10 +63,6 @@ export const ProductInfo = () => {
           </div>
         </div>
       </div>
-
-      {/* {product.map((product) => (
-        <div key={product.id}> {product.title}</div>
-      ))} */}
     </div>
   );
 };
