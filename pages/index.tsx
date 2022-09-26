@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import { MainComponent } from "../components/main/MainComponent";
-
 import { Routes } from "../routes/Routes";
 
 const Home: NextPage = () => {
@@ -19,7 +18,7 @@ const Home: NextPage = () => {
         <MainComponent />
       </main>
       <footer style={{ marginTop: "20px", textAlign: "center" }}>
-        ZADANIE REKRUTACYJNE FRONT-END DEVELOPER 2022 TADEUSZ KISZKA
+        PRZYKŁADOWE ZADANIE FRONT-END DEVELOPER 2022 TADEUSZ KISZKA
       </footer>
     </div>
   );
