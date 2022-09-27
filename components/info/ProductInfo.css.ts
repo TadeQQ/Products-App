@@ -1,16 +1,32 @@
 import { style } from "@vanilla-extract/css";
 
 export const container = style({
-  backgroundColor: "white",
-  margin: "auto",
-  width: "90%",
-  border: "solid 1px",
-  borderColor: "white",
-  padding: "20px 10px",
-  display: "flex",
-  justifyContent: "space-around",
-  color: "black",
+  "@media": {
+    "only screen and (min-width: 885px)": {
+      backgroundColor: "white",
+      margin: "auto",
+      width: "90%",
+      border: "solid 1px",
+      borderColor: "white",
+      padding: "20px 10px",
+      display: "flex",
+      justifyContent: "space-around",
+      color: "black",
+    },
+    "only screen and (max-width: 885px)": {
+      backgroundColor: "white",
+      margin: "auto",
+      width: "90%",
+      border: "solid 1px",
+      borderColor: "white",
+      padding: "20px 10px",
+      display: "flex",
+      flexDirection: "column",
+      color: "black",
+    },
+  },
 });
+
 export const info = style({
   width: "50%",
 });
