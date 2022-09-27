@@ -7,12 +7,25 @@ export const filterName = style({
   borderColor: "white",
 });
 export const filterContainer = style({
-  border: "solid 1px",
-  borderColor: "white",
-  display: "flex",
-  justifyContent: "space-around",
-  padding: "15px",
+  "@media": {
+    "only screen and (min-width: 900px)": {
+      border: "solid 1px",
+      borderColor: "white",
+      display: "flex",
+      justifyContent: "space-around",
+      padding: "15px",
+    },
+    "only screen and (min-width: 520px) and (max-width: 899px)": {
+      border: "solid 1px",
+      borderColor: "white",
+      display: "flex",
+      flexFlow: "column wrap",
+      justifyContent: "center",
+      padding: "15px",
+    },
+  },
 });
+
 export const select = style({
   border: "solid 1px",
   borderColor: "white",
@@ -40,6 +53,7 @@ export const container = style({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
+  marginTop: "15px",
 });
 
 export const button = style({
