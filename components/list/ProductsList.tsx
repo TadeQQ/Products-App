@@ -1,5 +1,5 @@
 import React from "react";
-import { containerR, item } from "./Product.css";
+import { containerR, item, description, image } from "./Product.css";
 import Link from "next/link";
 import { Routes } from "../../routes/Routes";
 import { Product as ProductType } from "../../types/Product";
@@ -17,12 +17,13 @@ export const ProductsList = ({ products }: ProductListProps) => {
           <Link href={Routes.PRODUCT(product.id)} key={product.id}>
             <div className={item}>
               <Image
+                className={image}
                 src={product.thumbnail}
                 alt={product.title}
                 height={200}
                 width={220}
               />
-              <div>
+              <div className={description}>
                 <h3>{product.title}</h3>
                 {product.description}
               </div>

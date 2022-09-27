@@ -1,6 +1,12 @@
 import React, { useState, useMemo } from "react";
-import { container, filterName } from "./MainComponent.css";
-import { containerR, item, button } from "../list/Product.css";
+import {
+  main,
+  container,
+  filterName,
+  button,
+  filterContainer,
+  select,
+} from "./MainComponent.css";
 import { ProductsList } from "../list/ProductsList";
 import { useProducts } from "../../hooks/useProducts";
 import { useFetchFilters } from "../../hooks/useFetchFilters";
@@ -35,11 +41,11 @@ export const MainComponent = () => {
   };
 
   return (
-    <div className={containerR}>
+    <div className={main}>
       <h3 className={filterName}>FILTERING</h3>
-      <div className={container}>
+      <div className={filterContainer}>
         <div>
-          <select onChange={handleChangeCategory}>
+          <select className={select} onChange={handleChangeCategory}>
             <option value={""}>All</option>
             {filters?.categories.map((category) => (
               <option key={category} value={category}>
@@ -49,7 +55,7 @@ export const MainComponent = () => {
           </select>
         </div>
         <div>
-          <select onChange={handleChangeBrand}>
+          <select className={select} onChange={handleChangeBrand}>
             <option value={""}>All</option>
             {filters?.brands.map((brand) => (
               <option key={brand} value={brand}>
@@ -59,11 +65,14 @@ export const MainComponent = () => {
           </select>
         </div>
       </div>
-      <div>{data ? <ProductsList products={products} /> : "Loading..."}</div>
-
-      {isLoadMoreVisible && (
-        <button onClick={() => setSize((p) => p + 1)}>Load More</button>
-      )}
+      <div className={container}>
+        {data ? <ProductsList products={products} /> : "Loading..."}
+        {isLoadMoreVisible && (
+          <button className={button} onClick={() => setSize((p) => p + 1)}>
+            Load More
+          </button>
+        )}
+      </div>
     </div>
   );
 };

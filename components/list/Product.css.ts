@@ -2,35 +2,30 @@ import { style } from "@vanilla-extract/css";
 
 export const containerR = style({
   margin: "auto",
-  width: "50%",
-  border: "solid 1px",
-  borderColor: "white",
-  padding: "20px 15px",
+  width: "70%",
   marginTop: "20px",
 });
 
 export const item = style({
   border: "solid 1px",
   borderColor: "white",
-  padding: "20px 15px",
   marginBottom: "20px",
-  display: "flex",
-  justifyContent: "space-between",
-  ":hover": {
-    backgroundColor: "gray",
-    cursor: "pointer",
-  },
-});
-export const button = style({
-  border: "solid 1px",
-  borderColor: "white",
-  padding: "10px",
-  backgroundColor: "black",
+  padding: "10px 15px",
   ":hover": {
     backgroundColor: "gray",
     cursor: "pointer",
   },
   ":active": {
-    transform: "scale(0.94)",
+    transform: "scale(0.97)",
   },
+});
+
+export const description = style({
+  float: "right",
+  width: "50%",
+});
+
+export const image = style({
+  float: "left",
+  width: "50%",
 });

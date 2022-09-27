@@ -35,7 +35,7 @@ interface UseProductsResponse {
 }
 
 export const useProducts = (
-  { _page, _limit = 2, category, brand }: FetchProductsQueryParams,
+  { _page, _limit = 5, category, brand }: FetchProductsQueryParams,
   options?: SWRConfiguration
 ) =>
   useSWRInfinite<UseProductsResponse>(
